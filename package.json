@@ -1,0 +1,20 @@
+{
+  "name": "switchr-api",
+  "version": "1.0.0",
+  "description": "SwitchBot API client",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.28.0",
+    "@eslint/js": "^9.28.0"
+  }
+}
