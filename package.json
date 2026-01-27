@@ -1,6 +1,6 @@
 {
   "name": "@caseman72/switchr-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple SwitchBot API client for smart devices",
   "main": "index.js",
   "type": "module",
