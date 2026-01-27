@@ -4,8 +4,11 @@ SwitchBot API client for Node.js. Read temperature sensors and control devices.
 
 ## Setup
 
-1. Copy `.env.local.example` to `.env.local`
-2. Get API credentials from the SwitchBot app: Profile > Preferences > Developer Options
+1. Get API credentials from the SwitchBot app: Profile > Preferences > Developer Options
+2. Create `.env.local` with your credentials (checked in order, first found is used):
+   - `.env.local` (current directory)
+   - `~/.config/switchr-api/.env.local`
+   - `~/.switchbot.env.local`
 
 ```
 SWITCHBOT_TOKEN=your-token-here
@@ -35,4 +38,4 @@ const status = await switchr.getStatus(deviceId);
 
 ## License
 
-ISC
+MIT

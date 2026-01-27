@@ -1,17 +1,27 @@
-import path from "path";
+import { existsSync } from "fs";
+import { homedir } from "os";
+import { join } from "path";
 import { config } from "dotenv";
 import { getDeviceList, getDeviceStatus } from "./lib/devices.js";
 import { getTemperature } from "./lib/sensors.js";
 import { getRateLimitStatus, RateLimitError } from "./lib/request.js";
 import { loadDeviceCache, saveDeviceCache, clearDeviceCache, getCacheAge } from "./lib/deviceCache.js";
 
+// Load .env.local from first available location
+const envPaths = [
+  ".env.local",
+  join(homedir(), ".config", "switchr-api", ".env.local"),
+  join(homedir(), ".switchbot.env.local")
+];
+
+const envPath = envPaths.find(p => existsSync(p));
+if (envPath) {
+  config({ path: envPath });
+}
+
 class Switchr {
   constructor(options = {}) {
     this.cachePath = options.cachePath || ".";
-
-    // Load .env.local from cachePath
-    config({ path: path.join(this.cachePath, ".env.local") });
-
     this.token = options.token || process.env.SWITCHBOT_TOKEN;
     this.secret = options.secret || process.env.SWITCHBOT_SECRET;
   }
