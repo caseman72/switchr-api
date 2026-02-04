@@ -31,12 +31,10 @@ class Switchr {
     if (!forceRefresh) {
       const cached = loadDeviceCache(this.cachePath);
       if (cached) {
-        console.log("Using cached device list");
         return cached;
       }
     }
 
-    console.log("Fetching device list from API...");
     const result = await getDeviceList(this.token, this.secret);
     saveDeviceCache(result, this.cachePath);
     return result;
