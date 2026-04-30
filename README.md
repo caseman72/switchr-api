@@ -25,14 +25,25 @@ const switchr = new Switchr();
 // List devices
 const { devices } = await switchr.getDevices();
 
-// Get single temperature
+// Temperature sensors (Meter, MeterPlus, WoIOSensor)
 const temp = await switchr.getTemperature(deviceId);
 console.log(temp.temperature, temp.unit, temp.humidity, temp.battery);
-
-// Get all temperatures
 const all = await switchr.getAllTemperatures();
 
-// Get device status
+// Plug Mini — power state and energy data
+const plug = await switchr.getPlugStatus(deviceId);
+console.log(plug.power, plug.voltage, plug.watts, plug.currentMilliamps);
+const allPlugs = await switchr.getAllPlugs();
+await switchr.turnOn(deviceId);
+await switchr.turnOff(deviceId);
+
+// Bot (finger simulator) — momentary press for pressMode bots
+await switchr.pressBot(deviceId);
+// switchMode bots:
+await switchr.turnOnBot(deviceId);
+await switchr.turnOffBot(deviceId);
+
+// Generic device status
 const status = await switchr.getStatus(deviceId);
 ```
 

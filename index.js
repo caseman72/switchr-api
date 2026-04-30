@@ -4,6 +4,8 @@ import { join } from "path";
 import { config } from "dotenv";
 import { getDeviceList, getDeviceStatus } from "./lib/devices.js";
 import { getTemperature } from "./lib/sensors.js";
+import { getPlugStatus, turnOnPlug, turnOffPlug, isPlugType } from "./lib/plugs.js";
+import { pressBot, turnOnBot, turnOffBot } from "./lib/bots.js";
 import { getRateLimitStatus, RateLimitError } from "./lib/request.js";
 import { loadDeviceCache, saveDeviceCache, clearDeviceCache, getCacheAge } from "./lib/deviceCache.js";
 
@@ -111,6 +113,58 @@ class Switchr {
       }
     }
     return results;
+  }
+
+  // Plugs (Plug Mini — power, voltage, watts, amps)
+  async getPlugStatus(deviceId) {
+    return getPlugStatus(this.token, this.secret, deviceId);
+  }
+
+  async getAllPlugs() {
+    const { devices } = await this.getDevices();
+    const plugs = devices.filter(d => isPlugType(d.deviceType));
+
+    const results = [];
+    for (const plug of plugs) {
+      try {
+        const status = await this.getPlugStatus(plug.deviceId);
+        results.push({
+          name: plug.deviceName,
+          deviceId: plug.deviceId,
+          ...status
+        });
+      }
+      catch (err) {
+        results.push({
+          name: plug.deviceName,
+          deviceId: plug.deviceId,
+          error: err.message
+        });
+      }
+    }
+    return results;
+  }
+
+  // Generic on/off — works for plugs and bots in switchMode
+  async turnOn(deviceId) {
+    return turnOnPlug(this.token, this.secret, deviceId);
+  }
+
+  async turnOff(deviceId) {
+    return turnOffPlug(this.token, this.secret, deviceId);
+  }
+
+  // Bot (finger) — pressMode does a momentary push
+  async pressBot(deviceId) {
+    return pressBot(this.token, this.secret, deviceId);
+  }
+
+  async turnOnBot(deviceId) {
+    return turnOnBot(this.token, this.secret, deviceId);
+  }
+
+  async turnOffBot(deviceId) {
+    return turnOffBot(this.token, this.secret, deviceId);
   }
 
   // Rate limit status
